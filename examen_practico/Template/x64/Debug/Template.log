@@ -1,0 +1,11 @@
+﻿  Source.cpp
+C:\Users\aeros.DESKTOP-OTLNJ38\OneDrive\Escritorio\VISION ARTIFICIAL\PROGRAMAS\Kernel_Gauss\Template\Source.cpp(14,26): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\aeros.DESKTOP-OTLNJ38\OneDrive\Escritorio\VISION ARTIFICIAL\PROGRAMAS\Kernel_Gauss\Template\Source.cpp(15,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\aeros.DESKTOP-OTLNJ38\OneDrive\Escritorio\VISION ARTIFICIAL\PROGRAMAS\Kernel_Gauss\Template\Source.cpp(50,12): warning C4101: 'k': unreferenced local variable
+C:\Users\aeros.DESKTOP-OTLNJ38\OneDrive\Escritorio\VISION ARTIFICIAL\PROGRAMAS\Kernel_Gauss\Template\Source.cpp(50,15): warning C4101: 'l': unreferenced local variable
+C:\Users\aeros.DESKTOP-OTLNJ38\OneDrive\Escritorio\VISION ARTIFICIAL\PROGRAMAS\Kernel_Gauss\Template\Source.cpp(233,23): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\aeros.DESKTOP-OTLNJ38\OneDrive\Escritorio\VISION ARTIFICIAL\PROGRAMAS\Kernel_Gauss\Template\Source.cpp(290,37): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\aeros.DESKTOP-OTLNJ38\OneDrive\Escritorio\VISION ARTIFICIAL\PROGRAMAS\Kernel_Gauss\Template\Source.cpp(292,14): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\aeros.DESKTOP-OTLNJ38\OneDrive\Escritorio\VISION ARTIFICIAL\PROGRAMAS\Kernel_Gauss\Template\Source.cpp(362,14): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\aeros.DESKTOP-OTLNJ38\OneDrive\Escritorio\VISION ARTIFICIAL\PROGRAMAS\Kernel_Gauss\Template\Source.cpp(353,18): warning C4101: 'resultado': unreferenced local variable
+  Template.vcxproj -> C:\Users\aeros.DESKTOP-OTLNJ38\OneDrive\Escritorio\VISION ARTIFICIAL\PROGRAMAS\Kernel_Gauss\x64\Debug\Template.exe
