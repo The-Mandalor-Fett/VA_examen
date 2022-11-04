@@ -30,6 +30,7 @@ void calcularHistograma(Mat imagenRecibida, int histogramaRecibido[]);
 Mat sobel_aplicado_enX(Mat imagen_recibida);
 Mat sobel_aplicado_enY(Mat imagen_recibida);
 Mat filtro_sobel(Mat imagen_recibida);
+Mat supresionNoMaxima(Mat imagenRecibida, Mat anguloRecibido);
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -154,9 +155,24 @@ int main()
 	cout << "Aplicando filtro sobel" << endl;
 	imagen_Sobel = filtro_sobel(imagenEqualizada);
 
-	Mat contornos;
-	Canny(imagen_Sobel, contornos, 10, 350);
+	//SACAMOS EL TAN^-1
+	Mat anguloSobel(imagenEqualizada.rows, imagenEqualizada.cols, CV_8UC1);
+	double angulo = 0.0;
+	for (int i = 0; i < imagenEqualizada.rows; i++)
+	{
+		for (int j = 0; j < imagenEqualizada.cols; j++)
+		{
+			//LO DA EN GRADOS, LO CONVERTIMOS A RAD
+			angulo = atan2(double(imagen_Sobel_Gy.at<uchar>(Point(j, i))),double(imagen_Sobel_Gx.at<uchar>(Point(j, i)))) * (180/ M_PI);
+			anguloSobel.at<uchar>(Point(j, i)) = angulo;
+		}
+		
+	}
 
+	//Comienza el CAnny
+	//REALIZAMOS SUPRESIÓN NO MÁXIMA
+	Mat supresionNM(imagen_Sobel.rows, imagen_Sobel.cols, CV_8UC1);
+	supresionNM = supresionNoMaxima(imagen_Sobel, anguloSobel);
 
 	namedWindow("Imagen Original", WINDOW_AUTOSIZE);//Creación de una ventana
 	imshow("Imagen Original", imagen);
@@ -179,8 +195,11 @@ int main()
 	namedWindow("Imagen Filtro Sobel", WINDOW_AUTOSIZE);//Creación de una ventana
 	imshow("Imagen Filtro Sobel", imagen_Sobel);
 
-	namedWindow("Imagen Canny", WINDOW_AUTOSIZE);//Creación de una ventana
-	imshow("Imagen Canny", contornos);
+	namedWindow("Imagen Angulo sobel", WINDOW_AUTOSIZE);//Creación de una ventana
+	imshow("Imagen Filtro angulo sobel", anguloSobel);
+
+	namedWindow("Imagen NM", WINDOW_AUTOSIZE);//Creación de una ventana
+	imshow("Imagen NM", supresionNM);
 
 	cout << "Filas y columnas de la original [ " << imagen.rows << " , " << imagen.cols << " ]" << endl;
 	cout << "Filas y columnas de la Gris [ " << imagen_gris_NTSC.rows << " , " << imagen_gris_NTSC.cols << " ]" << endl;
@@ -545,6 +564,62 @@ Mat filtro_sobel(Mat imagen_recibida)
 
 		
 }
+
+Mat supresionNoMaxima(Mat imagenRecibida, Mat anguloRecibido)
+{
+	
+		Mat bordeDetectado(imagenRecibida.rows, imagenRecibida.cols, CV_8UC1);
+		int vecinoX = 0;
+		int vecinoY = 0;
+		double angulo = 0;//
+
+		//CHECA SI LA INTENSIDAD DEL PIXEL EN LA MIMA DIRECCIÓN TIENE UN VALOR MAYOR AL PIXEL QUE SE ESTÁ PROCESANDO
+		for (int i = 0; i < imagenRecibida.rows; i++)
+		{
+			for (int j = 0; j < imagenRecibida.cols; j++)
+			{
+				//cERO GRADOS
+				if ((0 <= angulo < 22.5) || (157.5 <= angulo <= 180))
+				{
+					vecinoX = imagenRecibida.at<uchar>(Point(j , i ));
+					vecinoY = imagenRecibida.at<uchar>(Point(j , i ));
+				}
+				//Noventa grados
+				else if ((67.5 <= angulo < 112.5)) 
+				{
+					vecinoX = imagenRecibida.at<uchar>(Point(j , i ));
+					vecinoY = imagenRecibida.at<uchar>(Point(j , i ));
+				}
+				//cuarenta y cinco grados
+				else if ((22.5 <= angulo < 67.5)) 
+				{
+					vecinoX = imagenRecibida.at<uchar>(Point(j , i ));
+					vecinoY = imagenRecibida.at<uchar>(Point(j , i ));
+				}
+				//135 grados
+				else if ((112.5 <= angulo < 157.5)) 
+				{
+					vecinoX = imagenRecibida.at<uchar>(Point(j , i ));
+					vecinoY = imagenRecibida.at<uchar>(Point(j , i ));
+				}
+
+				if (imagenRecibida.at<uchar>(Point(j , i )) >= vecinoX && imagenRecibida.at<uchar>(Point(j , i )) >= vecinoY)
+				{
+					bordeDetectado.at<uchar>(Point(j, i)) = imagenRecibida.at<uchar>(Point(j , i ));
+				}
+
+				angulo = anguloRecibido.at<uchar>(Point(j, i));
+				bordeDetectado.at<uchar>(Point(j, i)) = uchar(0);
+			}
+		}
+		return bordeDetectado;
+}
+
+
+	
+
+
+
 
 
 /////////////////////////////////////////////////////////////////////////////
